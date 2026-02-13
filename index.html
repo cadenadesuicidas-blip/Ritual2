@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Danna 🖤 Ritual</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  min-height:100vh;
+  background:url('fondo.jfif') no-repeat center center fixed;
+  background-size:cover;
+  font-family:'UnifrakturCook', cursive;
+  color:#f5f5f5;
+  overflow:hidden;
+}
+
+.overlay{
+  background:rgba(0,0,0,0.82);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  position:relative;
+}
+
+.container{
+  max-width:900px;
+  width:100%;
+  z-index:5;
+}
+
+#gothicText{
+  font-size:clamp(2.4rem,6vw,4.2rem);
+  color:#c20000;
+  text-shadow:0 0 20px #c20000;
+  min-height:130px;
+  animation:heartbeat 3s infinite;
+}
+
+@keyframes heartbeat{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.04);}
+}
+
+.buttons{
+  margin-top:30px;
+  display:none;
+}
+
+button{
+  padding:14px 30px;
+  margin:10px;
+  font-size:1.2rem;
+  background:#0b0b0b;
+  color:#fff;
+  border:2px solid #c20000;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#c20000;
+  box-shadow:0 0 25px #c20000;
+}
+
+#message{
+  margin-top:30px;
+  font-family:serif;
+  font-size:1.1rem;
+  line-height:1.7;
+}
+
+#video{
+  margin-top:30px;
+  display:none;
+}
+
+.symbol{
+  position:absolute;
+  color:rgba(194,0,0,0.5);
+  font-size:2rem;
+  animation:float 12s linear infinite;
+}
+
+@keyframes float{
+  from{transform:translateY(100vh) rotate(0deg);}
+  to{transform:translateY(-120vh) rotate(360deg);}
+}
+
+.smoke{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:radial-gradient(circle, rgba(194,0,0,0.08), transparent 70%);
+  animation:pulse 6s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{opacity:0.3;}
+  50%{opacity:0.6;}
+}
+
+@keyframes fallAway {
+  0% {transform: translateY(0) rotate(0deg); opacity: 1;}
+  70% {opacity: 0.8;}
+  100% {transform: translateY(120vh) rotate(360deg); opacity: 0;}
+}
+
+.falling{
+  animation: fallAway 4s ease-in forwards;
+}
+
+#intro input{
+  padding:10px;
+  font-size:1.1rem;
+  background:#0b0b0b;
+  color:white;
+  border:2px solid #c20000;
+  border-radius:8px;
+}
+
+/* BOTÓN YOUTUBE */
+.youtube-btn{
+  display:inline-block;
+  padding:14px 30px;
+  font-size:1.2rem;
+  background:#0b0b0b;
+  color:#fff;
+  border:2px solid #c20000;
+  border-radius:12px;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.youtube-btn:hover{
+  background:#c20000;
+  box-shadow:0 0 25px #c20000;
+}
+</style>
+</head>
+
+<body>
+<div class="overlay">
+<div class="smoke"></div>
+
+<div class="container">
+<div id="intro">
+  <h1 style="color:#c20000; text-shadow:0 0 20px #c20000;">
+    Ingresa nuestra fecha de aniversario
+  </h1>
+
+  <input type="date" id="anniversary" />
+  <br><br>
+  <button onclick="startRitual()">Iniciar ritual</button>
+</div>
+
+<div id="gothicText"></div>
+
+<div class="buttons" id="buttons">
+  <button onclick="sayYes()">SÍ</button>
+  <button id="noBtn" onclick="sayNo()">NO</button>
+</div>
+
+<div id="message"></div>
+
+<div id="video">
+  <a 
+    href="https://www.youtube.com/watch?v=LM1D77vBDdg"
+    target="_blank"
+    class="youtube-btn"
+  >
+    💖 Dame click 💖
+  </a>
+</div>
+
+</div>
+</div>
+
+<script>
+const gothicText = document.getElementById("gothicText");
+const buttons = document.getElementById("buttons");
+const message = document.getElementById("message");
+
+const question = "Danna, ¿quieres ser mi San Valentín?";
+let index = 0;
+let typingTimeout;
+let noUsed = false;
+
+function typeText(){
+  if(index < question.length){
+    gothicText.innerHTML += question.charAt(index);
+    index++;
+    typingTimeout = setTimeout(typeText, 120);
+  } else {
+    if(noUsed){
+      const noBtn = document.getElementById("noBtn");
+      if(noBtn) noBtn.remove();
+    }
+    setTimeout(() => {
+      buttons.style.display = "block";
+    }, 800);
+  }
+}
+
+function startRitual(){
+  const dateInput = document.getElementById("anniversary").value;
+  const correctDate = "2025-11-25";
+
+  if(dateInput !== correctDate){
+    gothicText.innerHTML = "⛧ La fecha es incorrecta ⛧";
+    return;
+  }
+
+  document.getElementById("intro").style.display = "none";
+  gothicText.innerHTML = "";
+  message.innerHTML = "";
+  setTimeout(typeText, 600);
+}
+
+function restartRitual(){
+  clearTimeout(typingTimeout);
+  index = 0;
+
+  gothicText.innerHTML = "";
+  message.innerHTML = "";
+  buttons.style.display = "none";
+
+  const noBtn = document.getElementById("noBtn");
+  if(noBtn){
+    noBtn.remove();
+  }
+
+  const yesBtn = buttons.querySelector("button");
+  if(yesBtn){
+    yesBtn.style.display = "inline-block";
+  }
+
+  setTimeout(typeText, 1200);
+}
+
+function sayNo(){
+  noUsed = true;
+
+  const noBtn = document.getElementById("noBtn");
+  if(noBtn){
+    noBtn.classList.add("falling");
+  }
+
+  const yesBtn = buttons.querySelector("button:not(#noBtn)");
+  if(yesBtn){
+    yesBtn.style.display = "none";
+  }
+
+  gothicText.innerHTML = "💔 El ritual rechaza esa respuesta…";
+  message.innerHTML = `
+    Las sombras murmuran:<br><br>
+    <b>«El destino no se niega tan fácil»</b>
+  `;
+
+  setTimeout(() => {
+    restartRitual();
+  }, 5000);
+}
+
+function sayYes(){
+  buttons.style.display = "none";
+  gothicText.innerHTML = "Lo sabía… es el destino 🖤";
+
+  setTimeout(() => {
+    message.innerHTML = `
+      Aunque el calendario diga que llevamos mucho tiempo sin vernos, para mí sigues presente en todo lo que hago.
+      Me pesa no poder pasar días enteros contigo como antes, pero quiero que tengas la seguridad de que mi amor por ti
+      no depende de cuántas horas nos veamos a la semana.<br><br>
+	 Siempre hay canciones que me hacen recordarte…<br>
+    y sentir cuánto te extraño 🖤
+    `;
+    document.getElementById("video").style.display = "block";
+  }, 3500);
+}
+
+const symbols = ["⛧","☽","✶","✵","☠","⚸"];
+for(let i=0;i<25;i++){
+  const s = document.createElement("div");
+  s.className = "symbol";
+  s.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+  s.style.left = Math.random()*100 + "vw";
+  s.style.animationDuration = (8 + Math.random()*10) + "s";
+  document.body.appendChild(s);
+}
+</script>
+</body>
+</html>
+
